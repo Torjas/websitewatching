@@ -6,6 +6,7 @@ import (
 	"github.com/carlescere/scheduler"
 	"github.com/go-rod/rod"
 	"net/http"
+	"os"
 	"runtime"
 )
 
@@ -26,7 +27,7 @@ func main() {
 
 		n := false
 
-		page := browser.MustPage("")
+		page := browser.MustPage(os.Getenv("WATCHER_URL"))
 
 		elist := page.MustElement("#_tb_relevant_results")
 
@@ -93,7 +94,7 @@ func post(newlistings map[string]string) {
 	var b bytes.Buffer
 	b.WriteString(message)
 	client := http.Client{}
-	req, err := http.NewRequest(http.MethodPost, "", &b)
+	req, err := http.NewRequest(http.MethodPost, os.Getenv("WATCHER_GCHAT_WEBHOOK"), &b)
 	if err != nil {
 		println("Error creating request: " + err.Error())
 	}
@@ -130,6 +131,3 @@ func ExpandUrl(url string) (string, error) {
 
 	return expandedUrl, nil
 }
-
-//token-YOZ5KL
-//f4be4c15-7ecd-41a5-867a-8b74eb216bd8
